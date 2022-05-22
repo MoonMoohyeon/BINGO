@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <cstdio>
 #include <windows.h>
 #include <conio.h>
 
@@ -16,6 +17,13 @@ class MHMoonGame
 private:
 	int** mapForUser;
 	int** mapForCom;
+
+	// 추가한 리플레이 변수들
+	int** repForUser;
+	int** repForCom;
+	int orderForReplay[81];
+	int orderCount = 0;
+
 	int cursorX = 0;
 	int cursorY = 0;
 	int ch;
@@ -32,10 +40,11 @@ public:
 	void textColor(int color);
 	void play();
 	void inGameCursor();
+	void computerTurn();
 	int showMenu();
 	int createMap();
 	void showMap();
-	void changeMap(int x, int y);
+	int changeMap(int x, int y);
 	void swap(int& x, int& y);
 	int decision();
 	void replay();

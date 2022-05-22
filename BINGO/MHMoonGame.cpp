@@ -46,7 +46,7 @@ int MHMoonGame::showMenu()
 
 		if (ch == ENTER)
 		{
-			return cursorY - CURSOR_Y_MIN;		// 현재 Y 좌표에서 Y 좌표 최솟값을 뺀다. 10이라는 리터럴 상수 사용 지양.
+			return cursorY - CURSOR_Y_MIN;
 			break;
 		}
 
@@ -56,13 +56,13 @@ int MHMoonGame::showMenu()
 			switch (ch)
 			{
 			case UP:
-				if (cursorY > CURSOR_Y_MIN)		// 리터럴 상수 사용 지양.
+				if (cursorY > CURSOR_Y_MIN)
 				{
 					cursorY--;
 				}
-				break;			// break는 if 조건과 상관 없이 항상 실행되어야 함.
+				break;
 			case DOWN:
-				if (cursorY < CURSOR_Y_MAX)		// 리터럴 상수 사용 지양.
+				if (cursorY < CURSOR_Y_MAX)
 				{
 					cursorY++;
 				}
@@ -75,12 +75,12 @@ int MHMoonGame::createMap()
 {
 	int _size = -1;
 	int max;
-
-	system("cls");
+	orderCount = 0;
 
 	do
 	{
-		cout << "          생성할 빙고판의 크기를 입력하세요. (3 ~ 9) : ";
+		system("cls");
+		cout << "\n\n\n\n\n\n\n\n\n\n          생성할 빙고판의 크기를 입력하세요. (3 ~ 9) : ";
 		cin >> _size;
 
 		if (3 <= _size && _size <= 9) {
@@ -91,6 +91,7 @@ int MHMoonGame::createMap()
 		system("cls");
 		cout << "\n\n\n\n\n\n\n\n\n\n";
 		cout << "          입력 값이 정확하지 않습니다.";
+		Sleep(1000);
 	} while (true);
 
 	minX = 4;
@@ -138,18 +139,29 @@ int MHMoonGame::createMap()
 			n++;
 		}
 	}
+
+	// 동적할당...?
+	repForUser = new int* [size];
+	for (int i = 0; i < size; i++)
+		repForUser[i] = new int[size];
+
+	repForCom = new int* [size];
+	for (int i = 0; i < size; i++)
+		repForCom[i] = new int[size];
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			repForUser[i][j] = mapForUser[i][j];
+			repForCom[i][j] = mapForCom[i][j];
+		}
+	}
+
 	return size;
-
-
 }
 void MHMoonGame::play()
 {
-	/*
-		cout과 printf 혼용하지 말 것.
-		cout으로 통일하길.
-		iomanip 헤더파일의 기능을 사용하여 출력 형식을 맞추기에 용이하다.
-	*/
-
 	int sel = showMenu();
 	switch (sel)
 	{
@@ -158,19 +170,31 @@ void MHMoonGame::play()
 		while (true)
 		{
 			inGameCursor();	// 매 게임 루프에서 숫자 선택 함수 호출
+			system("cls");
+			cout << "\n\n\n\n\n\n\n\n\n\n               컴퓨터 턴!" << endl;
+			Sleep(1000);
+			computerTurn();
 
-			int result = decision();	// 변수 이름으로 의미를 알기 힘든 n보다는 result가 더 나음
-			if (result == 0) // 조건에서 !n보다는 n == 0으로 바꾸는 것이 더 가독성이 좋음
+			int result = decision();
+			if (result == 0)
 			{
 				system("cls");
 				printf("\n\n\n\n\n\n\n\n\n\n               컴퓨터 승리!\n\n\n\n\n");
+				replay();
 				break;
 			}
 			else if (result == 1)
 			{
 				system("cls");
 				printf("\n\n\n\n\n\n\n\n\n\n               유저 승리!\n\n\n\n\n");
+				replay();
 				break;
+			}
+			else if (result == 2)
+			{
+				system("cls");
+				printf("\n\n\n\n\n\n\n\n\n\n               무승부...!\n\n\n\n\n");
+				Sleep(1000);
 			}
 		}
 		break;
@@ -178,7 +202,7 @@ void MHMoonGame::play()
 		//Todo : Load Save File and Continue Game
 		break;
 	case 2:
-		return; // play 함수가 return되면 어차피 main함수가 종료되고 프로그램이 끝나는데 굳이 exit를? 그리고 exit를 하면 아래 break는 실행되지 않는다.
+		return;
 	}
 }
 
@@ -190,7 +214,7 @@ void MHMoonGame::showMap()
 	{
 		for (int j = 0; j < size; j++)
 		{
-			if (mapForUser[i][j] == 0) printf("    O");		// == 0으로 하는 것이 더 가독성이 좋음
+			if (mapForUser[i][j] == 0) printf("    O");
 			else if (mapForUser[i][j] == -1) printf("    X");
 			else printf("%5d", mapForUser[i][j]);
 		}
@@ -204,7 +228,7 @@ void MHMoonGame::showMap()
 	{
 		for (int j = 0; j < size; j++)
 		{
-			if (mapForCom[i][j] == 0) printf("    O");		// == 0으로 하는 것이 더 가독성이 좋음
+			if (mapForCom[i][j] == 0) printf("    O");
 			else if (mapForCom[i][j] == -1) printf("    X");
 			else printf("%5d", mapForCom[i][j]);
 		}
@@ -224,8 +248,14 @@ void MHMoonGame::inGameCursor()
 		ch = _getch();
 		if (ch == ENTER)
 		{
-			changeMap(cursorX, cursorY);
-			break;
+			if (changeMap(cursorX, cursorY) == 0)
+			{
+				break;
+			}
+			else
+			{
+				// 이미 0으로 바뀐 칸은 선택 못하게 하고 싶은데 실패함...
+			}
 		}
 		if (ch == 0xE0)
 		{
@@ -237,59 +267,83 @@ void MHMoonGame::inGameCursor()
 				{
 					cursorY -= 2;
 				}
-				break;		// showMenu와 같은 이유로 break는 if문 바깥에 있어야 함
+				break;
 			case DOWN:
 				if (cursorY < maxY)
 				{
 					cursorY += 2;
 				}
-				break;		// showMenu와 같은 이유로 break는 if문 바깥에 있어야 함
+				break;
 			case LEFT:
 				if (cursorX > minX)
 				{
 					cursorX -= 5;
 				}
-				break;		// showMenu와 같은 이유로 break는 if문 바깥에 있어야 함
+				break;
 			case RIGHT:
 				if (cursorX < maxX)
 				{
 					cursorX += 5;
 				}
-				break;		// showMenu와 같은 이유로 break는 if문 바깥에 있어야 함
+				break;
 			}
 		}
 	}
 }
-void MHMoonGame::changeMap(int x, int y)
+void MHMoonGame::computerTurn()
+{
+	srand(time(NULL));
+	int arrX, arrY;
+	int temp;
+
+	while (true)
+	{
+		arrX = rand() % (size);
+		arrY = rand() % (size);
+		if (mapForCom[arrX][arrY] != 0)
+		{
+			break;
+		}
+	}
+	orderForReplay[orderCount++] = mapForCom[arrX][arrY]; // 선택한 수를 리플레이용 배열에 담음.
+
+	mapForCom[arrX][arrY] = 0;
+	mapForUser[arrX][arrY] = 0;
+}
+int MHMoonGame::changeMap(int x, int y)
 {
 	int arrx = 0, arry = 0;
 	int n = 0;
-
-	// 너무 무식한 방법
-	// for (n = 0; n < 10; n++)
-	// {
-	// 	if (x == 4 + n * 5) arrx = n;
-	// 	if (y == 5 + n * 2) arry = n;
-	// }
 
 	// 개선된 코드
 	arrx = (x - 4) / 5;
 	arry = (y - 5) / 2;
 
-
-	for (int i = 0; i < size; i++)
+	if (mapForUser[arry][arrx] == 0) // 이미 0으로 바뀐 칸은 선택 못하게 하고 싶은데 실패함...
 	{
-		for (int j = 0; j < size; j++)
-		{
-			if (mapForCom[i][j] == mapForUser[arry][arrx])
-			{
-				mapForCom[i][j] = 0;
-				break; // 각 숫자는 오직 한 개이므로 break를 하는 편이 나음
-			}
-
-		}
+		cout << "이미 선택된 칸입니다." << endl;
+		Sleep(1000);
+		return -1;
 	}
-	mapForUser[arry][arrx] = 0;
+	else
+	{
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				if (mapForCom[i][j] == mapForUser[arry][arrx])
+				{
+					mapForCom[i][j] = 0;
+					break;
+				}
+
+			}
+		}
+		orderForReplay[orderCount++] = mapForUser[arry][arrx]; // 선택한 수를 리플레이용 배열에 담음.
+
+		mapForUser[arry][arrx] = 0;
+	}
+	return 0;
 }
 void MHMoonGame::swap(int& x, int& y)
 {
@@ -305,6 +359,9 @@ int MHMoonGame::decision()
 	int clUser = 0;
 	int crUser = 0;
 	int check = 0;
+
+	int userWin = 0;
+	int comWin = 0;
 	for (i = 0; i < size; i++)
 	{
 		rUser = 0;
@@ -323,11 +380,11 @@ int MHMoonGame::decision()
 		}
 		if (rUser == size)
 		{
-			return 1;
+			userWin = 1;
 		}
 		if (cUser == size)
 		{
-			return 1;
+			userWin = 1;
 		}
 		if (mapForUser[i][i] == 0 || mapForUser[i][i] == -1)
 		{
@@ -340,12 +397,12 @@ int MHMoonGame::decision()
 	}
 	if (clUser == size)
 	{
-		return 1;
+		userWin = 1;
 	}
 
 	if (crUser == size)
 	{
-		return 1;
+		userWin = 1;
 	}
 
 	int rCom = 0;
@@ -371,11 +428,11 @@ int MHMoonGame::decision()
 		}
 		if (rCom == size)
 		{
-			return 0;
+			comWin = 1;
 		}
 		if (cCom == size)
 		{
-			return 0;
+			comWin = 1;
 		}
 		if (mapForCom[i][i] == 0 || mapForCom[i][i] == -1)
 		{
@@ -388,19 +445,96 @@ int MHMoonGame::decision()
 	}
 	if (clCom == size)
 	{
-		return 0;
+		comWin = 1;
 	}
 
 	if (crCom == size)
 	{
-		return 0;
+		comWin = 1;
 	}
 
-	return 2;
+	if (userWin == 1 && comWin == 1) // 동시 빙고, 무승부
+	{
+		// ==> 오류 있음!!!!! 한 번 무승부 뜨면 영원히 무승부되는 상태, 수정 필요 drawCount 변수 만들 예정
+		return 2;
+	}
+	else if (userWin == 1 && comWin != 1) // 유저 승
+	{
+		return 1;
+	}
+	else if (userWin != 1 && comWin == 1) // 컴퓨터 승
+	{
+		return 0;
+	}
+	else
+	{
+		return 3; // 빙고 없음
+	}
+
 }
 void MHMoonGame::replay()
 {
+	// 리플레이 만들다가 누더기됨. 처음부터 다시 만들어야할 거 같아서 포기함.
+	int p = 0;
+	for (int k = orderCount; k > 0; k--)
+	{
+		system("cls");
+		printf("\n\n\n");
+		printf("User\n\n");
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				if (repForUser[i][j] == 0) printf("    O");
+				else if (repForUser[i][j] == -1) printf("    X");
+				else printf("%5d", repForUser[i][j]);
+			}
+			printf("\n\n");
+		}
 
+		printf("\n");
+
+		printf("Computer\n\n");
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				if (repForCom[i][j] == 0) printf("    O");
+				else if (repForCom[i][j] == -1) printf("    X");
+				else printf("%5d", repForCom[i][j]);
+			}
+			printf("\n\n");
+		}
+
+
+
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				if (repForUser[i][j] == orderForReplay[p])
+				{
+					repForUser[i][j] = 0;
+				}
+
+			}
+		}
+
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				if (mapForCom[i][j] == orderForReplay[p])
+				{
+					mapForCom[i][j] = 0;
+					p++;
+				}
+
+			}
+		}
+		Sleep(1000);
+	}
+	
 }
 
 void MHMoonGame::saveGame()
