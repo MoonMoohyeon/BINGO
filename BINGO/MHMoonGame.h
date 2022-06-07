@@ -10,17 +10,18 @@
 #define UP 72
 #define DOWN 80
 #define ENTER 13
+#define ESC 27
 
 using namespace std;
 
 class MHMoonGame
 {
 private:
-	int **mapForUser;
-	int **mapForCom;
+	int** mapForUser;
+	int** mapForCom;
 
-	int **repForUser;
-	int **repForCom;
+	int** repForUser;
+	int** repForCom;
 	int orderForReplay[81];
 	int orderCount = 0;
 
@@ -35,24 +36,28 @@ private:
 	int minY;
 
 public:
+
+	~MHMoonGame();
+
 	void setCursorView(bool visible);
 	void gotoxy(int x, int y);
 	void textColor(int color);
 
 	void play();
 
-	void showMenu();
-	void inGameMenu();
+	int showMenu();
+	int inGameMenu();
 
 	void showMap();
-	void inGameCursor();
+	int inGameCursor();
 	int playerTurn(int x, int y);
 	void computerTurn();
 
 	int createMap();
-	void swap(int &x, int &y);
+	void swap(int& x, int& y);
 
 	int decision();
 	void replay();
+	void loadGame();
 	void saveGame();
 };
