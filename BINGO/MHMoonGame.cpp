@@ -108,13 +108,6 @@ int MHMoonGame::showMenu()
 	cursorX = CURSOR_X_MIN;
 	cursorY = CURSOR_Y_MIN;
 
-	/*
-		1. 반환값이 명확히 떨어지는 값이 아니라 cursor의 Y좌표에서 10을 뺀 값인 형태는 좋지 않음. 상수를 선언하여 해결
-		2. 루프 한 번당 입력을 두 번(getch가 두 번씩 호출됨) 받는 동작이 잘 이해가 되지 않음. :
-			해결 : https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/078sfkak(v=vs.110)
-		3. switch case문의 각 case는 항상 break가 되어야 함. 예를 들어 case UP에서 cursor Y가 10 이하라면 break가 실행되지 않고 그대로 case DOWN이 실행됨
-	*/
-
 	while (1)
 	{
 		gotoxy(cursorX, cursorY);
