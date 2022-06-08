@@ -354,6 +354,9 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 	int vertical[9] = {0};
 	int diagnal[2] = {0};
 
+	outX = 0;
+	outY = 0;
+
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
