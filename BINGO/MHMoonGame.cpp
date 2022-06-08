@@ -396,18 +396,18 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 
 			if (i == j)
 			{
-				temp += (diagnal[0] == size - 1) ? 100 : diagnal[0];
+				temp += (diagnal[0] == (size - 1)) ? 100 : diagnal[0];
 				temp += 1
 			}
 
 			if ((size - i - 1) == j)
 			{
-				temp += (diagnal[1] == size - 1) ? 100 : diagnal[1];
+				temp += (diagnal[1] == (size - 1)) ? 100 : diagnal[1];
 				temp += 1
 			}
 
-			temp += (horizontal[i] == size - 1) ? 100 : horizontal[i];
-			temp += (vertical[j] == size - 1) ? 100 : vertical[j];
+			temp += (horizontal[i] == (size - 1)) ? 100 : horizontal[i];
+			temp += (vertical[j] == (size - 1)) ? 100 : vertical[j];
 
 			if (maxValue < temp)
 			{
