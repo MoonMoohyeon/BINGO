@@ -1,9 +1,9 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <cstdio>
-#include <windows.h>
 #include <conio.h>
+#include <cstdio>
+#include <fstream>
+#include <iostream>
+#include <windows.h>
 
 #define LEFT 75
 #define RIGHT 77
@@ -17,11 +17,11 @@ using namespace std;
 class MHMoonGame
 {
 private:
-	int** mapForUser;
-	int** mapForCom;
+	int **mapForUser;
+	int **mapForCom;
 
-	int** repForUser;
-	int** repForCom;
+	int **repForUser;
+	int **repForCom;
 	int orderForReplay[81];
 	int orderCount = 0;
 
@@ -36,7 +36,6 @@ private:
 	int minY;
 
 public:
-
 	~MHMoonGame();
 
 	void setCursorView(bool visible);
@@ -51,10 +50,12 @@ public:
 	void showMap();
 	int inGameCursor();
 	int playerTurn(int x, int y);
+
+	void findBestPlay(int &outX, int &outY);
 	void computerTurn();
 
 	int createMap();
-	void swap(int& x, int& y);
+	void swap(int &x, int &y);
 
 	int decision();
 	void replay();
