@@ -228,7 +228,7 @@ void MHMoonGame::showMap()
 			{
 				textColor(9);
 				printf("    O");
-			}				
+			}
 			else if (mapForUser[i][j] == -1)
 			{
 				textColor(12);
@@ -264,7 +264,7 @@ void MHMoonGame::showMap()
 			{
 				textColor(15);
 				printf("%5d", mapForCom[i][j]);
-			}	
+			}
 		}
 		printf("\n\n");
 	}
@@ -369,12 +369,18 @@ int MHMoonGame::playerTurn(int x, int y)
 
 void MHMoonGame::findBestPlay(int &outX, int &outY)
 {
-	int horizontal[9] = {0, };
-	int vertical[9] = {0, };
-	int diagnal[2] = {0, };
+	int horizontal[9] = {
+		0,
+	};
+	int vertical[9] = {
+		0,
+	};
+	int diagnal[2] = {
+		0,
+	};
 
-	//outX = 0;
-	//outY = 0;
+	// outX = 0;
+	// outY = 0;
 
 	for (int i = 0; i < size; i++)
 	{
@@ -410,23 +416,21 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 		{
 			if (mapForCom[i][j] == 0 || mapForCom[i][j] == -1)
 			{
-				break;
+				continue;
 			}
 
 			if (i == j)
 			{
-				temp += (diagnal[0] == (size - 1)) ? 100 : diagnal[0];
-				temp += 1
+				temp += 1 << diagnal[0];
 			}
 
 			if ((size - i - 1) == j)
 			{
-				temp += (diagnal[1] == (size - 1)) ? 100 : diagnal[1];
-				temp += 1
+				temp += 1 << diagnal[0];
 			}
 
-			temp += (horizontal[i] == (size - 1)) ? 100 : horizontal[i];
-			temp += (vertical[j] == (size - 1)) ? 100 : vertical[j];
+			temp += 1 << horizontal[i];
+			temp += 1 << vertical[j];
 
 			if (maxValue < temp)
 			{
@@ -735,7 +739,7 @@ void MHMoonGame::replay()
 				{
 					textColor(9);
 					printf("    O");
-				}	
+				}
 				else if (repForUser[i][j] == -1)
 				{
 					textColor(12);
@@ -745,7 +749,7 @@ void MHMoonGame::replay()
 				{
 					textColor(15);
 					printf("%5d", repForUser[i][j]);
-				}	
+				}
 			}
 			printf("\n\n");
 		}
