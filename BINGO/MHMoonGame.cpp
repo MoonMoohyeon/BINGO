@@ -410,11 +410,11 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 		}
 	}
 
-	int maxValue = 0;
+	unsigned int maxValue = 0;
 
 	for (int i = 0; i < size; i++)
 	{
-		int temp = 0;
+		unsigned int temp = 1;
 		for (int j = 0; j < size; j++)
 		{
 			if (mapForCom[i][j] == 0 || mapForCom[i][j] == -1)
@@ -424,16 +424,16 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 
 			if (i == j)
 			{
-				temp += 1 << diagnal[0];
+				temp <<= diagnal[0];
 			}
 
 			if ((size - i - 1) == j)
 			{
-				temp += 1 << diagnal[1];
+				temp <<= diagnal[1];
 			}
 
-			temp += 1 << horizontal[i];
-			temp += 1 << vertical[j];
+			temp <<= horizontal[i];
+			temp <<= vertical[j];
 
 			if (maxValue < temp)
 			{
