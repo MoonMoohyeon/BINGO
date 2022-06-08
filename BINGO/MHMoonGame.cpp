@@ -63,7 +63,9 @@ void MHMoonGame::play()
 			if (result == 0)
 			{
 				system("cls");
+				textColor(12);
 				printf("\n\n\n\n\n\n\n\n\n\n               ÄÄÇ»ÅÍ ½Â¸®!\n\n\n\n\n");
+				textColor(15);
 				Sleep(3000);
 				replay();
 				break;
@@ -71,7 +73,9 @@ void MHMoonGame::play()
 			else if (result == 1)
 			{
 				system("cls");
+				textColor(9);
 				printf("\n\n\n\n\n\n\n\n\n\n               À¯Àú ½Â¸®!\n\n\n\n\n");
+				textColor(15);
 				Sleep(3000);
 				replay();
 				break;
