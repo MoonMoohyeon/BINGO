@@ -348,7 +348,7 @@ int MHMoonGame::playerTurn(int x, int y)
 	}
 }
 
-void findBestPlay(int &outX, int &outY)
+void MHMoonGame::findBestPlay(int& outX, int& outY)
 {
 	int horizontal[9];
 	int vertical[9];
@@ -403,13 +403,13 @@ void findBestPlay(int &outX, int &outY)
 
 			temp += horizontal[i];
 			temp += vertical[j];
-		}
 
-		if (maxValue < temp)
-		{
-			outX = i;
-			outY = j;
-			maxValue = temp;
+			if (maxValue < temp)
+			{
+				outX = i;
+				outY = j;
+				maxValue = temp;
+			}
 		}
 	}
 }
