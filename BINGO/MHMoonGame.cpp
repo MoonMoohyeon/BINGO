@@ -94,6 +94,7 @@ void MHMoonGame::play()
 
 int MHMoonGame::showMenu()
 {
+	textColor(15);
 	system("cls");
 	cout << "\n\n\n\n"
 		 << "             ■■■    ■■■    ■■    ■    ■■■■      ■■■    \n"
@@ -224,11 +225,20 @@ void MHMoonGame::showMap()
 		for (int j = 0; j < size; j++)
 		{
 			if (mapForUser[i][j] == 0)
+			{
+				textColor(9);
 				printf("    O");
+			}				
 			else if (mapForUser[i][j] == -1)
+			{
+				textColor(12);
 				printf("    X");
+			}
 			else
+			{
+				textColor(15);
 				printf("%5d", mapForUser[i][j]);
+			}
 		}
 		printf("\n\n");
 	}
@@ -241,11 +251,20 @@ void MHMoonGame::showMap()
 		for (int j = 0; j < size; j++)
 		{
 			if (mapForCom[i][j] == 0)
+			{
+				textColor(9);
 				printf("    O");
+			}
 			else if (mapForCom[i][j] == -1)
+			{
+				textColor(12);
 				printf("    X");
+			}
 			else
+			{
+				textColor(15);
 				printf("%5d", mapForCom[i][j]);
+			}	
 		}
 		printf("\n\n");
 	}
@@ -350,12 +369,12 @@ int MHMoonGame::playerTurn(int x, int y)
 
 void MHMoonGame::findBestPlay(int &outX, int &outY)
 {
-	int horizontal[9] = {0};
-	int vertical[9] = {0};
-	int diagnal[2] = {0};
+	int horizontal[9] = {0, };
+	int vertical[9] = {0, };
+	int diagnal[2] = {0, };
 
-	outX = 0;
-	outY = 0;
+	//outX = 0;
+	//outY = 0;
 
 	for (int i = 0; i < size; i++)
 	{
@@ -421,7 +440,6 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 
 void MHMoonGame::computerTurn()
 {
-	srand(time(NULL));
 	int arrX, arrY;
 
 	if (orderCount >= size * size)
@@ -451,6 +469,7 @@ found:
 
 int MHMoonGame::createMap()
 {
+	srand(time(NULL));
 	int _size = -1;
 	int max;
 	orderCount = 0;
@@ -518,7 +537,6 @@ int MHMoonGame::createMap()
 		}
 	}
 
-	// 동적할당...?
 	repForUser = new int *[size];
 	for (int i = 0; i < size; i++)
 		repForUser[i] = new int[size];
@@ -658,7 +676,6 @@ int MHMoonGame::decision()
 	}
 	else if ((userBingoCount == comBingoCount) && (userBingoCount > 0) && (comBingoCount > 0)) // 동시 빙고, 무승부
 	{
-		// ==> 오류 있음!!!!! 한 번 무승부 뜨면 영원히 무승부되는 상태, 수정 필요 drawCount 변수 만들 예정
 		return 2;
 	}
 	else if (userBingoCount > comBingoCount) // 유저 승
@@ -715,11 +732,20 @@ void MHMoonGame::replay()
 			for (int j = 0; j < size; j++)
 			{
 				if (repForUser[i][j] == 0)
+				{
+					textColor(9);
 					printf("    O");
+				}	
 				else if (repForUser[i][j] == -1)
+				{
+					textColor(12);
 					printf("    X");
+				}
 				else
+				{
+					textColor(15);
 					printf("%5d", repForUser[i][j]);
+				}	
 			}
 			printf("\n\n");
 		}
@@ -732,11 +758,20 @@ void MHMoonGame::replay()
 			for (int j = 0; j < size; j++)
 			{
 				if (repForCom[i][j] == 0)
+				{
+					textColor(9);
 					printf("    O");
+				}
 				else if (repForCom[i][j] == -1)
+				{
+					textColor(12);
 					printf("    X");
+				}
 				else
+				{
+					textColor(15);
 					printf("%5d", repForCom[i][j]);
+				}
 			}
 			printf("\n\n");
 		}
