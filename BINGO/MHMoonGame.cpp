@@ -53,7 +53,9 @@ void MHMoonGame::play()
 			}
 
 			system("cls");
+			textColor(12);
 			cout << "\n\n\n\n\n\n\n\n\n\n               컴퓨터 턴!" << endl;
+			textColor(15);
 			Sleep(1000);
 			computerTurn();
 
@@ -94,7 +96,6 @@ void MHMoonGame::play()
 
 int MHMoonGame::showMenu()
 {
-	textColor(15);
 	system("cls");
 	cout << "\n\n\n\n"
 		 << "             ■■■    ■■■    ■■    ■    ■■■■      ■■■    \n"
@@ -228,15 +229,16 @@ void MHMoonGame::showMap()
 			{
 				textColor(9);
 				printf("    O");
+				textColor(15);
 			}
 			else if (mapForUser[i][j] == -1)
 			{
 				textColor(12);
 				printf("    X");
+				textColor(15);
 			}
 			else
 			{
-				textColor(15);
 				printf("%5d", mapForUser[i][j]);
 			}
 		}
@@ -254,15 +256,16 @@ void MHMoonGame::showMap()
 			{
 				textColor(9);
 				printf("    O");
+				textColor(15);
 			}
 			else if (mapForCom[i][j] == -1)
 			{
 				textColor(12);
 				printf("    X");
+				textColor(15);
 			}
 			else
 			{
-				textColor(15);
 				printf("%5d", mapForCom[i][j]);
 			}
 		}
@@ -739,15 +742,16 @@ void MHMoonGame::replay()
 				{
 					textColor(9);
 					printf("    O");
+					textColor(15);
 				}
 				else if (repForUser[i][j] == -1)
 				{
 					textColor(12);
 					printf("    X");
+					textColor(15);
 				}
 				else
 				{
-					textColor(15);
 					printf("%5d", repForUser[i][j]);
 				}
 			}
@@ -765,15 +769,16 @@ void MHMoonGame::replay()
 				{
 					textColor(9);
 					printf("    O");
+					textColor(15);
 				}
 				else if (repForCom[i][j] == -1)
 				{
 					textColor(12);
 					printf("    X");
+					textColor(15);
 				}
 				else
 				{
-					textColor(15);
 					printf("%5d", repForCom[i][j]);
 				}
 			}
