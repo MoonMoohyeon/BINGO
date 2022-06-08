@@ -54,7 +54,7 @@ void MHMoonGame::play()
 
 			system("cls");
 			textColor(12);
-			cout << "\n\n\n\n\n\n\n\n\n\n               컴퓨터 턴!" << endl;
+			cout << "\n\n\n\n\n\n\n\n\n\n               컴퓨터 턴!\n\n" << endl;
 			textColor(15);
 			Sleep(1000);
 			computerTurn();
@@ -415,12 +415,11 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 	}
 
 	unsigned int maxValue = 0;
-
 	for (int i = 0; i < size; i++)
 	{
-		unsigned int temp = 1;
 		for (int j = 0; j < size; j++)
 		{
+			unsigned int temp = 1;
 			if (mapForCom[i][j] == 0 || mapForCom[i][j] == -1)
 			{
 				continue;
