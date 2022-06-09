@@ -2,19 +2,7 @@
 
 MHMoonGame::~MHMoonGame()
 {
-	for (int i = 0; i < size; i++)
-	{
-		delete[] mapForUser[i];
-		delete[] mapForCom[i];
-
-		delete[] repForUser[i];
-		delete[] repForCom[i];
-	}
-
-	delete[] mapForUser;
-	delete[] mapForCom;
-	delete[] repForUser;
-	delete[] repForCom;
+	memoryDelete();
 }
 
 void MHMoonGame::setCursorView(bool visible)
@@ -39,12 +27,12 @@ void MHMoonGame::play()
 	{
 		int result = showMenu();
 
-		if (result == -1)
+		if (result == -1) // 메뉴에서 게임 종료 선택 시
 		{
 			return;
 		}
 
-		while (true)
+		while (true) // 게임 시작 및 이어하기 선택 시
 		{
 			int result = inGameCursor(); // 매 게임 루프에서 숫자 선택 함수 호출
 			if (result == -1)
@@ -54,9 +42,11 @@ void MHMoonGame::play()
 
 			system("cls");
 			textColor(12);
-			cout << "\n\n\n\n\n\n\n\n\n\n               컴퓨터 턴!\n\n" << endl;
+			cout << "\n\n\n\n\n\n\n\n\n\n               컴퓨터 턴!" << endl;
 			textColor(15);
+			cout << "\n\n               201910162 문무현" << endl;
 			Sleep(1000);
+			// 컴퓨터 턴 함수 실행
 			computerTurn();
 
 			result = decision();
@@ -64,8 +54,9 @@ void MHMoonGame::play()
 			{
 				system("cls");
 				textColor(12);
-				printf("\n\n\n\n\n\n\n\n\n\n               컴퓨터 승리!\n\n\n\n\n");
+				cout << "\n\n\n\n\n\n\n\n\n\n               컴퓨터 승리!";
 				textColor(15);
+				cout << "\n\n               201910162 문무현" << endl;
 				Sleep(3000);
 				replay();
 				break;
@@ -74,8 +65,9 @@ void MHMoonGame::play()
 			{
 				system("cls");
 				textColor(9);
-				printf("\n\n\n\n\n\n\n\n\n\n               유저 승리!\n\n\n\n\n");
+				cout << "\n\n\n\n\n\n\n\n\n\n               유저 승리!";
 				textColor(15);
+				cout << "\n\n               201910162 문무현" << endl;
 				Sleep(3000);
 				replay();
 				break;
@@ -83,13 +75,15 @@ void MHMoonGame::play()
 			else if (result == 2)
 			{
 				system("cls");
-				printf("\n\n\n\n\n\n\n\n\n\n               무승부...!\n\n\n\n\n");
+				cout << "\n\n\n\n\n\n\n\n\n\n               무승부...!";
+				cout << "\n\n               201910162 문무현" << endl;
 				Sleep(1000);
 			}
 			else if (result == 3)
 			{
 				system("cls");
-				printf("\n\n\n\n\n\n\n\n\n\n               무승부 종료.\n\n\n\n\n");
+				cout << "\n\n\n\n\n\n\n\n\n\n               무승부 종료.";
+				cout << "\n\n               201910162 문무현" << endl;
 				Sleep(3000);
 				replay();
 				break;
@@ -109,7 +103,8 @@ int MHMoonGame::showMenu()
 		 << "             ■■■    ■■■    ■    ■■     ■■■■     ■■■    \n\n"
 		 << "                                 게 임 시 작\n"
 		 << "                                 이 어 하 기\n"
-		 << "                                 게 임 종 료\n";
+		 << "                                 게 임 종 료\n\n"
+		 << "                                 201910162 문무현\n";
 	const int CURSOR_X_MIN = 30;
 	const int CURSOR_Y_MIN = 10;
 	const int CURSOR_Y_MAX = 12;
@@ -139,7 +134,7 @@ int MHMoonGame::showMenu()
 			break;
 		}
 
-		if (ch == 0xE0) // msdn에 0xE0으로 적혀 있으므로 224에서 0xE0으로 수정. 이런 의미를 알 수 없는 값엔 주석을 달아주는 것이 좋음.
+		if (ch == 0xE0) // 확장키
 		{
 			ch = _getch();
 			switch (ch)
@@ -167,9 +162,10 @@ int MHMoonGame::inGameMenu()
 {
 	system("cls");
 	cout << "\n\n\n\n\n\n\n\n\n\n"
-		 << "                                 게 임 재 개\n"
-		 << "                                 저 장 하 기\n"
-		 << "                                 메뉴로 돌아가기\n";
+		<< "                                 게 임 재 개\n"
+		<< "                                 저 장 하 기\n"
+		<< "                                 메뉴로 돌아가기\n\n"
+		<< "                                 201910162 문무현\n";
 	const int CURSOR_X_MIN = 30;
 	const int CURSOR_Y_MIN = 10;
 	const int CURSOR_Y_MAX = 12;
@@ -251,7 +247,7 @@ void MHMoonGame::showMap()
 
 	printf("\n");
 
-	printf("Computer\n\n");
+	printf("Computer\n\n"); // 주석 처리
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
@@ -275,6 +271,8 @@ void MHMoonGame::showMap()
 		}
 		printf("\n\n");
 	}
+
+	cout << "201910162 문무현" << endl;
 }
 
 int MHMoonGame::inGameCursor()
@@ -288,24 +286,7 @@ int MHMoonGame::inGameCursor()
 		showMap();
 		gotoxy(cursorX, cursorY);
 		ch = _getch();
-		if (ch == ENTER)
-		{
-			int valid = playerTurn(cursorX, cursorY);
-			if (valid == 1)
-				break;
-		}
-		else if (ch == ESC)
-		{
-			int result = inGameMenu();
 
-			if (result == -1)
-			{
-				return -1;
-			}
-
-			cursorX = 4;
-			cursorY = 5;
-		}
 		if (ch == 0xE0)
 		{
 			ch = _getch();
@@ -337,23 +318,41 @@ int MHMoonGame::inGameCursor()
 				break;
 			}
 		}
+
+		if (ch == ENTER)
+		{
+			int valid = playerTurn(cursorX, cursorY);
+			if (valid == 1) // 이미 선택된 칸을 고르지 못하도록
+				break;
+		}
+		else if (ch == ESC)
+		{
+			int result = inGameMenu();
+
+			if (result == -1)
+			{
+				return -1;
+			}
+
+			cursorX = 4;
+			cursorY = 5;
+		}
 	}
 	return 0;
 }
 int MHMoonGame::playerTurn(int x, int y)
 {
-	int arrx = 0, arry = 0;
+	int arrX = 0, arrY = 0;
 	int n = 0;
 
-	// 개선된 코드
-	arrx = (x - 4) / 5;
-	arry = (y - 5) / 2;
-	orderForReplay[orderCount++] = mapForUser[arry][arrx]; // 선택한 수를 리플레이용 배열에 담음.
+	arrX = (x - 4) / 5;
+	arrY = (y - 5) / 2;
+	orderForReplay[orderCount++] = mapForUser[arrY][arrX]; // 선택한 수를 리플레이용 배열에 담음.
 	while (true)
 	{
-		if (mapForUser[arry][arrx] == 0)
+		if (mapForUser[arrY][arrX] == 0) // 이미 선택된 수
 			return -1;
-		if (mapForUser[arry][arrx] == -1)
+		if (mapForUser[arrY][arrX] == -1)
 			return -1;
 		else
 		{
@@ -361,14 +360,36 @@ int MHMoonGame::playerTurn(int x, int y)
 			{
 				for (int j = 0; j < size; j++)
 				{
-					if (mapForCom[i][j] == mapForUser[arry][arrx])
+					if (mapForCom[i][j] == mapForUser[arrY][arrX])
 					{
 						mapForCom[i][j] = 0;
 						break;
 					}
 				}
 			}
-			mapForUser[arry][arrx] = 0;
+
+			mapForUser[arrY][arrX] = 0;
+
+
+			// 컴퓨터 알고리즘에 사용
+			horizontal[arrX]++;
+			vertical[arrY]++;
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					if (mapForCom[i][i] == 0 || mapForCom[i][i] == -1)
+					{
+						diagnal[0]++;
+					}
+
+					if (mapForCom[i][size - i - 1] == 0 || mapForCom[i][size - i - 1] == -1)
+					{
+						diagnal[1]++;
+					}
+				}
+			}
+
 			return 1;
 		}
 	}
@@ -376,50 +397,12 @@ int MHMoonGame::playerTurn(int x, int y)
 
 void MHMoonGame::findBestPlay(int &outX, int &outY)
 {
-	int horizontal[9] = {
-		0,
-	};
-	int vertical[9] = {
-		0,
-	};
-	int diagnal[2] = {
-		0,
-	};
-
-	// outX = 0;
-	// outY = 0;
-
+	unsigned int maxValue = 0; // 최대 평가치
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
 		{
-			if (mapForCom[i][j] == 0 || mapForCom[i][j] == -1)
-			{
-				horizontal[i]++;
-			}
-			if (mapForCom[j][i] == 0 || mapForCom[j][i] == -1)
-			{
-				vertical[i]++;
-			}
-		}
-
-		if (mapForCom[i][i] == 0 || mapForCom[i][i] == -1)
-		{
-			diagnal[0]++;
-		}
-
-		if (mapForCom[i][size - i - 1] == 0 || mapForCom[i][size - i - 1] == -1)
-		{
-			diagnal[1]++;
-		}
-	}
-
-	unsigned int maxValue = 0;
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			unsigned int temp = 1;
+			unsigned int temp = 1; // 평가치
 			if (mapForCom[i][j] == 0 || mapForCom[i][j] == -1)
 			{
 				continue;
@@ -427,16 +410,35 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 
 			if (i == j)
 			{
-				temp <<= (diagnal[0] + 1);
+				temp += 1 << (diagnal[0] + 1);
+
+				if (diagnal[0] == size - 1)
+				{
+					temp += 1 << (diagnal[0] + 1);
+				}
 			}
 
 			if ((size - i - 1) == j)
 			{
-				temp <<= (diagnal[1] + 1);
+				temp += 1 << (diagnal[1] + 1);
+
+				if (diagnal[1] == size - 1)
+				{
+					temp += 1 << (diagnal[1] + 1);
+				}
 			}
 
-			temp <<= horizontal[i];
-			temp <<= vertical[j];
+			if (horizontal[i] == size - 1)
+			{
+				temp += 1 << horizontal[i];
+			}
+			if (vertical[j] == size - 1)
+			{
+				temp += 1 << vertical[j];
+			}
+
+			temp += 1 << horizontal[i];
+			temp += 1 << vertical[j];
 
 			if (maxValue < temp)
 			{
@@ -452,12 +454,31 @@ void MHMoonGame::computerTurn()
 {
 	int arrX, arrY;
 
+	// 빙고판이 가득 찬 경우 선택하지 않음
 	if (orderCount >= size * size)
 	{
 		return;
 	}
 
 	findBestPlay(arrX, arrY); // arrX, arrY에 최적 수의 좌표가 담김.
+
+	horizontal[arrX]++;
+	vertical[arrY]++;
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (mapForCom[i][i] == 0 || mapForCom[i][i] == -1)
+			{
+				diagnal[0]++;
+			}
+
+			if (mapForCom[i][size - i - 1] == 0 || mapForCom[i][size - i - 1] == -1)
+			{
+				diagnal[1]++;
+			}
+		}
+	}
 
 	orderForReplay[orderCount++] = mapForCom[arrX][arrY]; // 선택한 수를 리플레이용 배열에 담음.
 
@@ -468,25 +489,25 @@ void MHMoonGame::computerTurn()
 			if (mapForUser[i][j] == mapForCom[arrX][arrY])
 			{
 				mapForUser[i][j] = -1;
-				goto found;
+				break;
 			}
 		}
 	}
-found:
 
 	mapForCom[arrX][arrY] = -1;
 }
 
-int MHMoonGame::createMap()
+void MHMoonGame::createMap()
 {
+	memoryDelete();
 	srand(time(NULL));
 	int _size = -1;
-	int max;
 	orderCount = 0;
 
 	do
 	{
 		system("cls");
+		cout << "201910162 문무현" << endl;
 		cout << "\n\n\n\n\n\n\n\n\n\n          생성할 빙고판의 크기를 입력하세요. (3 ~ 9) : ";
 		cin >> _size;
 
@@ -499,14 +520,15 @@ int MHMoonGame::createMap()
 		system("cls");
 		cout << "\n\n\n\n\n\n\n\n\n\n";
 		cout << "          입력 값이 정확하지 않습니다.";
+		cout << "          201910162 문무현" << endl;
 		Sleep(1000);
 	} while (true);
 
+	// 커서 범위 제한
 	minX = 4;
 	minY = 5;
 	maxY = minY + 2 * (size - 1);
 	maxX = minX + 5 * (size - 1);
-	max = size * size;
 
 	mapForUser = new int *[size];
 	for (int i = 0; i < size; i++)
@@ -516,11 +538,14 @@ int MHMoonGame::createMap()
 	for (int i = 0; i < size; i++)
 		mapForCom[i] = new int[size];
 
+	// 빙고판 섞음
 	int temp[81];
+	int max = size * size;
 	int j = 0;
 	for (int i = 1; i <= max; i++)
 		temp[j++] = i;
 
+	// 유저 빙고판
 	for (int i = 0; i < max; i++)
 		swap(temp[(rand() % max - 1) + 1], temp[(rand() % max - 1) + 1]);
 
@@ -534,6 +559,7 @@ int MHMoonGame::createMap()
 		}
 	}
 
+	// 컴퓨터 빙고판
 	for (int i = 0; i < max; i++)
 		swap(temp[(rand() % max - 1) + 1], temp[(rand() % max - 1) + 1]);
 
@@ -547,6 +573,7 @@ int MHMoonGame::createMap()
 		}
 	}
 
+	// 리플레이를 위한 초기 상태 빙고판
 	repForUser = new int *[size];
 	for (int i = 0; i < size; i++)
 		repForUser[i] = new int[size];
@@ -563,8 +590,23 @@ int MHMoonGame::createMap()
 			repForCom[i][j] = mapForCom[i][j];
 		}
 	}
+}
 
-	return size;
+void MHMoonGame::memoryDelete()
+{
+	for (int i = 0; i < size; i++)
+	{
+		delete[] mapForUser[i];
+		delete[] mapForCom[i];
+
+		delete[] repForUser[i];
+		delete[] repForCom[i];
+	}
+
+	delete[] mapForUser;
+	delete[] mapForCom;
+	delete[] repForUser;
+	delete[] repForCom;
 }
 
 void MHMoonGame::swap(int &x, int &y)
@@ -573,6 +615,7 @@ void MHMoonGame::swap(int &x, int &y)
 	x = y;
 	y = temp;
 }
+
 int MHMoonGame::decision()
 {
 	int i, j;
@@ -701,6 +744,7 @@ int MHMoonGame::decision()
 		return -1;
 	}
 }
+
 void MHMoonGame::replay()
 {
 	for (int k = 0; k < orderCount; k++)
@@ -709,7 +753,7 @@ void MHMoonGame::replay()
 		{
 			for (int j = 0; j < size; j++)
 			{
-				if (k % 2 == 0)
+				if (k % 2 == 0) // 유저의 선택인지 컴퓨터의 선택인지 판단
 				{
 					if (repForUser[i][j] == orderForReplay[k])
 					{
@@ -735,6 +779,7 @@ void MHMoonGame::replay()
 		}
 
 		system("cls");
+		cout << "201910162 문무현" << endl;
 		printf("\n\n\n");
 		printf("User\n\n");
 		for (int i = 0; i < size; i++)
@@ -795,11 +840,12 @@ void MHMoonGame::replay()
 
 void MHMoonGame::loadGame()
 {
+	memoryDelete();
 	ifstream load("savefile.txt");
 
 	if (!load)
 	{
-		cerr << "파일 오류!" << endl;
+		cerr << "파일 오류! 201910162 문무현" << endl;
 		return;
 	}
 	else
@@ -870,7 +916,7 @@ void MHMoonGame::saveGame()
 	ofstream save("savefile.txt");
 	if (!save)
 	{
-		cerr << "파일 입력 오류!" << endl;
+		cerr << "파일 입력 오류! 201910162 문무현" << endl;
 		return;
 	}
 	else
