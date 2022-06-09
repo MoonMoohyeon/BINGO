@@ -62,7 +62,7 @@ public:
 	// 플레이어 및 컴퓨터 선택
 	void showMap();
 	int inGameCursor();
-	int playerTurn(int x, int y);
+	int playerPlay(int x, int y);
 
 	void findBestPlay(int &outX, int &outY);
 	void computerTurn();

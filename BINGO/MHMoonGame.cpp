@@ -321,7 +321,7 @@ int MHMoonGame::inGameCursor()
 
 		if (ch == ENTER)
 		{
-			int valid = playerTurn(cursorX, cursorY);
+			int valid = playerPlay(cursorX, cursorY);
 			if (valid == 1) // 이미 선택된 칸을 고르지 못하도록
 				break;
 		}
@@ -340,7 +340,7 @@ int MHMoonGame::inGameCursor()
 	}
 	return 0;
 }
-int MHMoonGame::playerTurn(int x, int y)
+int MHMoonGame::playerPlay(int x, int y)
 {
 	int arrX = 0, arrY = 0;
 	int n = 0;
