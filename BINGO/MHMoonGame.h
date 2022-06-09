@@ -39,11 +39,6 @@ private:
 	int minX;
 	int minY;
 
-	// 컴퓨터 알고리즘
-	int horizontal[9] = {0, };
-	int vertical[9] = {0, };
-	int diagnal[2] = {0, };
-
 public:
 	~MHMoonGame();
 

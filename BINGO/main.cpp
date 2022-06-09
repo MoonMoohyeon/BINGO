@@ -16,6 +16,18 @@
 저장하기 기능
 리플레이 기능
 
+createMap
+
+inGameCursor
+playerTurn
+computerTurn
+findBestPlay
+
+decision
+
+saveGame / loadGame
+replay
+
 */
 
 int main(void)

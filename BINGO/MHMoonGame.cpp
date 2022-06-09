@@ -105,11 +105,11 @@ int MHMoonGame::showMenu()
 		 << "                                 이 어 하 기\n"
 		 << "                                 게 임 종 료\n\n"
 		 << "                                 201910162 문무현\n";
-	const int CURSOR_X_MIN = 30;
+	const int CURSOR_X = 30;
 	const int CURSOR_Y_MIN = 10;
 	const int CURSOR_Y_MAX = 12;
 
-	cursorX = CURSOR_X_MIN;
+	cursorX = CURSOR_X;
 	cursorY = CURSOR_Y_MIN;
 
 	while (1)
@@ -370,26 +370,6 @@ int MHMoonGame::playerPlay(int x, int y)
 
 			mapForUser[arrY][arrX] = 0;
 
-
-			// 컴퓨터 알고리즘에 사용
-			horizontal[arrX]++;
-			vertical[arrY]++;
-			for (int i = 0; i < size; i++)
-			{
-				for (int j = 0; j < size; j++)
-				{
-					if (mapForCom[i][i] == 0 || mapForCom[i][i] == -1)
-					{
-						diagnal[0]++;
-					}
-
-					if (mapForCom[i][size - i - 1] == 0 || mapForCom[i][size - i - 1] == -1)
-					{
-						diagnal[1]++;
-					}
-				}
-			}
-
 			return 1;
 		}
 	}
@@ -397,6 +377,36 @@ int MHMoonGame::playerPlay(int x, int y)
 
 void MHMoonGame::findBestPlay(int &outX, int &outY)
 {
+
+	int horizontal[9] = {0, };
+	int vertical[9] = {0, };
+	int diagnal[2] = {0, };
+
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++)
+		{
+			if (mapForCom[i][j] == 0 || mapForCom[i][j] == -1)
+			{
+				horizontal[i]++;
+			}
+			if (mapForCom[j][i] == 0 || mapForCom[j][i] == -1)
+			{
+				vertical[i]++;
+			}
+		}
+
+		if (mapForCom[i][i] == 0 || mapForCom[i][i] == -1)
+		{
+			diagnal[0]++;
+		}
+
+		if (mapForCom[i][size - i - 1] == 0 || mapForCom[i][size - i - 1] == -1)
+		{
+			diagnal[1]++;
+		}
+	}
+
 	unsigned int maxValue = 0; // 최대 평가치
 	for (int i = 0; i < size; i++)
 	{
@@ -428,7 +438,10 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 				}
 			}
 
-			if (horizontal[i] == size - 1)
+			temp += 1 << horizontal[i];
+			temp += 1 << vertical[j];
+
+			if (horizontal[i] == size - 1) // 빙고 완성 직전
 			{
 				temp += 1 << horizontal[i];
 			}
@@ -436,9 +449,6 @@ void MHMoonGame::findBestPlay(int &outX, int &outY)
 			{
 				temp += 1 << vertical[j];
 			}
-
-			temp += 1 << horizontal[i];
-			temp += 1 << vertical[j];
 
 			if (maxValue < temp)
 			{
@@ -461,24 +471,6 @@ void MHMoonGame::computerTurn()
 	}
 
 	findBestPlay(arrX, arrY); // arrX, arrY에 최적 수의 좌표가 담김.
-
-	horizontal[arrX]++;
-	vertical[arrY]++;
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			if (mapForCom[i][i] == 0 || mapForCom[i][i] == -1)
-			{
-				diagnal[0]++;
-			}
-
-			if (mapForCom[i][size - i - 1] == 0 || mapForCom[i][size - i - 1] == -1)
-			{
-				diagnal[1]++;
-			}
-		}
-	}
 
 	orderForReplay[orderCount++] = mapForCom[arrX][arrY]; // 선택한 수를 리플레이용 배열에 담음.
 
